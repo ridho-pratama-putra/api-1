@@ -15,7 +15,7 @@ public class FirstControllers {
         return new ResponseEntity("hello  first", HttpStatus.OK);
     }
 
-    @RolesAllowed("user")
+    @RolesAllowed("user_api_1")
     @GetMapping(path = "/sec")
     public ResponseEntity second() {
         return new ResponseEntity("hello  second", HttpStatus.OK);
