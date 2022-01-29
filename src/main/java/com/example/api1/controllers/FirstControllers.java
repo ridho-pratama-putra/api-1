@@ -1,11 +1,10 @@
 package com.example.api1.controllers;
 
-import com.example.api1.models.Blog;
-import com.example.api1.models.CustomHttpError;
-import com.example.api1.models.CustomHttpResponse;
-import com.example.api1.models.CustomHttpStatus;
+import com.example.api1.UserMessageRepository;
+import com.example.api1.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,9 @@ import java.util.Arrays;
 
 @Controller
 public class FirstControllers {
+
+    @Autowired
+    UserMessageRepository userMessageRepository;
 
     Logger logger = LoggerFactory.getLogger(FirstControllers.class);
 
@@ -37,6 +39,8 @@ public class FirstControllers {
 
         customHttpResponse.setStatus(customHttpStatus);
         customHttpResponse.setResult(Arrays.asList(boo1, boo2));
+
+        userMessageRepository.save(UserMessage.builder().name("dummy").message("hello dummy").status("pending").build());
 
         return new ResponseEntity(customHttpResponse, HttpStatus.OK);
     }

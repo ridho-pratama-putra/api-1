@@ -1,8 +1,11 @@
 package com.example.api1.models;
 
+import lombok.Builder;
+
 import javax.persistence.*;
 
 @Entity
+@Builder
 public class UserMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
