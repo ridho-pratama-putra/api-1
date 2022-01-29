@@ -1,6 +1,6 @@
 package com.example.api1.controllers;
 
-import com.example.api1.UserMessageRepository;
+import com.example.api1.repositories.UserMessageRepository;
 import com.example.api1.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
