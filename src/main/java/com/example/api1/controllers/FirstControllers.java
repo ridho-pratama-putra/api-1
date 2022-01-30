@@ -25,16 +25,16 @@ public class FirstControllers {
 
     @GetMapping(path = "/first")
     public ResponseEntity first() {
-        CustomHttpResponse result = userMessageService.save();
-        return new ResponseEntity(result, HttpStatus.OK);
+        ResponseEntity result = userMessageService.save();
+        return result;
     }
 
     @RolesAllowed("user_api_1")
     @GetMapping(path = "/sec")
     public ResponseEntity second() {
         logger.info("controller /sec called");
-        CustomHttpResponse save = userMessageService.save();
-        return new ResponseEntity(save, HttpStatus.OK);
+        ResponseEntity result = userMessageService.save();
+        return result;
     }
 
     @RolesAllowed("user_api_1")

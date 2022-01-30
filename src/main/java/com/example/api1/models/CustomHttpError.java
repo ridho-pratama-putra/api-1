@@ -1,5 +1,12 @@
 package com.example.api1.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomHttpError {
     String source;
     String code;

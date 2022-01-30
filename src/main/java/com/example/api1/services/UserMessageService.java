@@ -6,6 +6,8 @@ import com.example.api1.models.UserMessage;
 import com.example.api1.repositories.UserMessageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -19,7 +21,7 @@ public class UserMessageService {
         this.userMessageRepository = userMessageRepository;
     }
 
-    public CustomHttpResponse save() {
+    public ResponseEntity save() {
         logger.info("service save called");
         UserMessage savedMessage = userMessageRepository.save(UserMessage.builder().name("dummy").message("hello dummy").status("pending").build());
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
@@ -29,7 +31,7 @@ public class UserMessageService {
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Arrays.asList(savedMessage));
 
-        return httpResponseBuilder.build();
+        return new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
     }
 
 }
