@@ -6,6 +6,7 @@ import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.services.UserMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,13 +17,9 @@ import java.util.Arrays;
 
 @Controller
 public class FirstControllers {
+    @Autowired
     UserMessageService userMessageService;
     private Logger logger = LoggerFactory.getLogger(FirstControllers.class);
-
-    public FirstControllers(UserMessageService userMessageService) {
-        this.userMessageService = userMessageService;
-    }
-
     @GetMapping(path = "/first")
     public ResponseEntity first() {
         ResponseEntity result = userMessageService.save();
