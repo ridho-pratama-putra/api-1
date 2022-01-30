@@ -4,7 +4,6 @@ import com.example.api1.models.CustomHttpError;
 import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.services.UserMessageService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,31 +25,16 @@ public class FirstControllers {
 
     @GetMapping(path = "/first")
     public ResponseEntity first() {
-        try {
-            userMessageService.save();
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return new ResponseEntity("ll", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return new ResponseEntity("hello  first", HttpStatus.OK);
+        CustomHttpResponse result = userMessageService.save();
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @RolesAllowed("user_api_1")
     @GetMapping(path = "/sec")
-    public ResponseEntity second() throws JsonProcessingException {
+    public ResponseEntity second() {
         logger.info("controller /sec called");
-        CustomHttpResponse customHttpResponse = new CustomHttpResponse();
-        CustomHttpStatus customHttpStatus = new CustomHttpStatus();
-        customHttpStatus.setCode("00");
-        customHttpStatus.setDescription("Success");
-
-        String save = userMessageService.save();
-
-        customHttpResponse.setStatus(customHttpStatus);
-        customHttpResponse.setResult(Arrays.asList(save));
-
-        return new ResponseEntity(customHttpResponse, HttpStatus.OK);
+        CustomHttpResponse save = userMessageService.save();
+        return new ResponseEntity(save, HttpStatus.OK);
     }
 
     @RolesAllowed("user_api_1")

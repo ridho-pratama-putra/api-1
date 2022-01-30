@@ -1,7 +1,14 @@
 package com.example.api1.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CustomHttpResponse {
     CustomHttpStatus status;
     List<CustomHttpError> error;

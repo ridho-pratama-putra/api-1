@@ -1,5 +1,12 @@
 package com.example.api1.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CustomHttpStatus {
     String code;
     String description;
