@@ -1,10 +1,12 @@
 package com.example.api1.controllers;
 
-import com.example.api1.repositories.UserMessageRepository;
-import com.example.api1.models.*;
+import com.example.api1.models.CustomHttpError;
+import com.example.api1.models.CustomHttpResponse;
+import com.example.api1.models.CustomHttpStatus;
+import com.example.api1.services.UserMessageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,32 +17,38 @@ import java.util.Arrays;
 
 @Controller
 public class FirstControllers {
+    UserMessageService userMessageService;
+    private Logger logger = LoggerFactory.getLogger(FirstControllers.class);
 
-    @Autowired
-    UserMessageRepository userMessageRepository;
-
-    Logger logger = LoggerFactory.getLogger(FirstControllers.class);
+    public FirstControllers(UserMessageService userMessageService) {
+        this.userMessageService = userMessageService;
+    }
 
     @GetMapping(path = "/first")
     public ResponseEntity first() {
+        try {
+            userMessageService.save();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return new ResponseEntity("ll", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         return new ResponseEntity("hello  first", HttpStatus.OK);
     }
 
     @RolesAllowed("user_api_1")
     @GetMapping(path = "/sec")
-    public ResponseEntity second() {
+    public ResponseEntity second() throws JsonProcessingException {
         logger.info("controller /sec called");
-        Blog boo1 = new Blog("title 1", "content 1");
-        Blog boo2 = new Blog("title 2", "content 2");
         CustomHttpResponse customHttpResponse = new CustomHttpResponse();
         CustomHttpStatus customHttpStatus = new CustomHttpStatus();
         customHttpStatus.setCode("00");
         customHttpStatus.setDescription("Success");
 
-        customHttpResponse.setStatus(customHttpStatus);
-        customHttpResponse.setResult(Arrays.asList(boo1, boo2));
+        String save = userMessageService.save();
 
-        userMessageRepository.save(UserMessage.builder().name("dummy").message("hello dummy").status("pending").build());
+        customHttpResponse.setStatus(customHttpStatus);
+        customHttpResponse.setResult(Arrays.asList(save));
 
         return new ResponseEntity(customHttpResponse, HttpStatus.OK);
     }

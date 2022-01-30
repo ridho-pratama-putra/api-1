@@ -1,7 +1,7 @@
 package com.example.api1.repositories;
 
 import com.example.api1.models.UserMessage;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,7 +18,7 @@ public class UserMessageRepositoryTest {
     private UserMessageRepository userMessageRepository;
 
     @Test
-    public void givenGenericEntityRepository_whenSaveAndRetreiveEntity_thenOK() {
+    public void givenUserMessageRepository_whenSaveAndRetreiveEntity_thenOK() {
         UserMessage userMessage = userMessageRepository.save(UserMessage.builder().status("pending").message("hello").name("brown").build());
         Optional<UserMessage> foundEntity = userMessageRepository.findById(userMessage.getId());
 
