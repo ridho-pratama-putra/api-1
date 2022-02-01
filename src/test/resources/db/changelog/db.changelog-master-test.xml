@@ -20,4 +20,10 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
         <addAutoIncrement tableName="user_message" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
         <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
     </changeSet>
+    <changeSet id="update table to have created date and modified date" author="">
+        <addColumn tableName="user_message">
+            <column name="create_date" type="DATETIME" valueDate="sysdate" defaultValueComputed="sysdate" />
+            <column name="modify_date" type="DATETIME" valueDate="sysdate" defaultValueComputed="sysdate" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -3,6 +3,7 @@ package com.example.api1.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +25,12 @@ public class UserMessage {
 
     @Column(nullable =false)
     private String status;
+
+    @Column(nullable = false, name = "create_date")
+    private Date createDate;
+
+    @Column(nullable = false, name = "modify_date")
+    private Date modifyDate;
 
     @Override
     public boolean equals(Object o) {
