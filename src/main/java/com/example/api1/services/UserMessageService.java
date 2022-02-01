@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 
 @Service
 public class UserMessageService {
@@ -23,14 +24,25 @@ public class UserMessageService {
 
     public ResponseEntity save() {
         logger.info("service save called");
-        UserMessage savedMessage = userMessageRepository.save(UserMessage.builder().name("dummy").message("hello dummy").status("pending").build());
+//        Optional<UserMessage> byId = userMessageRepository.findById(1L);
+//        UserMessage userMessage = byId.get();
+//        userMessage.setStatus("done");
+//        userMessage.setLastModifiedDate(new Date());
+//        userMessageRepository.save(userMessage);
+        UserMessage savedMessage = userMessageRepository.save(UserMessage.builder()
+                .name("dummy")
+                .message("hello dummy")
+                .status("pending")
+                .createdDate(new Date())
+                .lastModifiedDate(new Date())
+                .build());
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
         httpStatusBuilder.code("00");
         httpStatusBuilder.description("Success");
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Arrays.asList(savedMessage));
-
+//
         return new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
     }
 

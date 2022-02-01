@@ -1,6 +1,8 @@
 package com.example.api1.models;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,11 +28,13 @@ public class UserMessage {
     @Column(nullable =false)
     private String status;
 
-    @Column(nullable = false, name = "create_date")
-    private Date createDate;
+    @CreatedDate
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private Date createdDate;
 
-    @Column(nullable = false, name = "modify_date")
-    private Date modifyDate;
+    @LastModifiedDate
+    @Column(name = "last_modified_date", nullable = false)
+    private Date lastModifiedDate;
 
     @Override
     public boolean equals(Object o) {

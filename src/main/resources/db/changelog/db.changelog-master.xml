@@ -9,20 +9,16 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
             <column name="id" type="bigint">
                 <constraints primaryKey="true" primaryKeyName="user_message_id_pk" />
             </column>
-            <column name="user" type="varchar(250)">
+            <column name="name" type="varchar(250)">
                 <constraints nullable="false" notNullConstraintName="name_nn" />
             </column>
             <column name="message" type="varchar(250)">
                 <constraints nullable="false" notNullConstraintName="message_nn" />
             </column>
+            <column name="created_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
         </createTable>
         <addAutoIncrement tableName="user_message" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
         <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
-    </changeSet>
-    <changeSet id="update table to have created date and modified date" author="">
-        <addColumn tableName="user_message">
-            <column name="create_date" type="DATETIME" valueDate="sysdate" defaultValueComputed="sysdate" />
-            <column name="modify_date" type="DATETIME" valueDate="sysdate" defaultValueComputed="sysdate" />
-        </addColumn>
     </changeSet>
 </databaseChangeLog>
