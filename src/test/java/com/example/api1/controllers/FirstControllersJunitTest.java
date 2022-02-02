@@ -56,8 +56,8 @@ class FirstControllersJunitTest {
     }
 
     @Test
-    @Description("this test is not valid due to api call can be done without roles")
-    public void sec_shouldReturnUnauthorized_whenRequestDoesntHaveToken() {
+    @Description("this test is not valid due to api call can be done without roles. but still good because it can be use as logic layer test. keycloak part likely hard to test")
+    public void sec_shouldReturnWhatServiceSays() {
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
         httpStatusBuilder.code("00");
@@ -71,5 +71,22 @@ class FirstControllersJunitTest {
         ResponseEntity result = firstControllers.second();
 
         Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void create_shouldReturnWhatServiceSays() {
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        UserMessage savedMessage = UserMessage.builder().name("dummy").message("hello dummy").status("pending").build();
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(Collections.singletonList(savedMessage));
+        CustomHttpResponse expected = httpResponseBuilder.build();
+        Mockito.when(userMessageService.create(Mockito.any(UserMessage.class)))
+                .thenReturn(new ResponseEntity(expected, HttpStatus.CREATED));
+        ResponseEntity result = firstControllers.createMessage(savedMessage);
+
+        Assert.assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
 }

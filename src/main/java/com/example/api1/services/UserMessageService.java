@@ -1,5 +1,6 @@
 package com.example.api1.services;
 
+import com.example.api1.models.CustomHttpError;
 import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.UserMessage;
@@ -24,11 +25,6 @@ public class UserMessageService {
 
     public ResponseEntity save() {
         logger.info("service save called");
-//        Optional<UserMessage> byId = userMessageRepository.findById(1L);
-//        UserMessage userMessage = byId.get();
-//        userMessage.setStatus("done");
-//        userMessage.setLastModifiedDate(new Date());
-//        userMessageRepository.save(userMessage);
         UserMessage savedMessage = userMessageRepository.save(UserMessage.builder()
                 .name("dummy")
                 .message("hello dummy")
@@ -42,8 +38,37 @@ public class UserMessageService {
         httpStatusBuilder.description("Success");
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Arrays.asList(savedMessage));
-//
+
         return new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
     }
 
+    public ResponseEntity create(UserMessage userMessage) {
+        ResponseEntity result;
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        userMessage.setCreatedDate(new Date());
+        userMessage.setLastModifiedDate(new Date());
+        UserMessage savedMessage;
+
+        try {
+            savedMessage = userMessageRepository.save(userMessage);
+            httpStatusBuilder.code("00");
+            httpStatusBuilder.description("Success");
+            httpResponseBuilder.status(httpStatusBuilder.build());
+            httpResponseBuilder.result(Arrays.asList(savedMessage));
+            result = new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
+        } catch (Exception e) {
+            httpStatusBuilder.code("06");
+            httpStatusBuilder.description("General error");
+            httpResponseBuilder.status(httpStatusBuilder.build());
+            CustomHttpError buildedError = CustomHttpError.builder()
+                    .source("api-1")
+                    .message(e.getClass().getSimpleName())
+                    .build();
+            httpResponseBuilder.error(Arrays.asList(buildedError));
+            result = new ResponseEntity(httpResponseBuilder.build(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return result;
+    }
 }

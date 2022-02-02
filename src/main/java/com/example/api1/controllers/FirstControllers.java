@@ -3,6 +3,7 @@ package com.example.api1.controllers;
 import com.example.api1.models.CustomHttpError;
 import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
+import com.example.api1.models.UserMessage;
 import com.example.api1.services.UserMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.Arrays;
@@ -38,9 +41,10 @@ public class FirstControllers {
     @GetMapping(path = "/third")
     public ResponseEntity third() {
         CustomHttpResponse customHttpResponse = new CustomHttpResponse();
-        CustomHttpStatus customHttpStatus = new CustomHttpStatus();
-        customHttpStatus.setCode("06");
-        customHttpStatus.setDescription("General Error");
+        CustomHttpStatus build = CustomHttpStatus.builder()
+                .code("06")
+                .description("General Error")
+                .build();
 
         CustomHttpError customHttpError = new CustomHttpError();
         customHttpError.setSource("MS-API 1");
@@ -48,9 +52,16 @@ public class FirstControllers {
         CustomHttpError customHttpError2 = new CustomHttpError();
         customHttpError.setSource("MS-API 2");
 
-        customHttpResponse.setStatus(customHttpStatus);
+        customHttpResponse.setStatus(build);
         customHttpResponse.setError(Arrays.asList(customHttpError, customHttpError2));
 
         return new ResponseEntity(customHttpResponse, HttpStatus.OK);
+    }
+
+    @RolesAllowed("user_api_1")
+    @PostMapping(path = "/message")
+    public ResponseEntity createMessage(@RequestBody UserMessage userMessage) {
+        ResponseEntity responseEntity = userMessageService.create(userMessage);
+        return responseEntity;
     }
 }
