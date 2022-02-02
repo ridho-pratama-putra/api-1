@@ -70,6 +70,6 @@ class FirstControllersJunitTest {
                 .thenReturn(new ResponseEntity(expected, HttpStatus.OK));
         ResponseEntity result = firstControllers.second();
 
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+        Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 }
