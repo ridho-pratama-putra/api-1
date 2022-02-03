@@ -1,5 +1,6 @@
 package com.example.api1.services;
 
+import com.example.api1.enumeration.UserMessageStatus;
 import com.example.api1.models.CustomHttpError;
 import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
@@ -11,8 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class UserMessageService {
@@ -28,7 +28,7 @@ public class UserMessageService {
         UserMessage savedMessage = userMessageRepository.save(UserMessage.builder()
                 .name("dummy")
                 .message("hello dummy")
-                .status("pending")
+                .status(UserMessageStatus.PENDING)
                 .createdDate(new Date())
                 .lastModifiedDate(new Date())
                 .build());
@@ -38,6 +38,19 @@ public class UserMessageService {
         httpStatusBuilder.description("Success");
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Arrays.asList(savedMessage));
+
+        return new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
+    }
+
+    public ResponseEntity get() {
+        logger.info("service get called");
+        List<UserMessage> all = userMessageRepository.findAll();
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(new ArrayList<>(all));
 
         return new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
     }

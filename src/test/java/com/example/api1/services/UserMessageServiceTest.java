@@ -1,5 +1,6 @@
 package com.example.api1.services;
 
+import com.example.api1.enumeration.UserMessageStatus;
 import com.example.api1.models.CustomHttpError;
 import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
@@ -39,8 +40,9 @@ class UserMessageServiceTest {
         httpStatusBuilder.description("Success");
         UserMessage savedMessage = UserMessage.builder()
                 .name("dummy")
+                .name("dummy")
                 .message("hello dummy")
-                .status("pending")
+                .status(UserMessageStatus.PENDING)
                 .build();
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(savedMessage));
@@ -64,7 +66,7 @@ class UserMessageServiceTest {
         UserMessage message = UserMessage.builder()
                 .name("dummy")
                 .message("hello dummy")
-                .status("pending")
+                .status(UserMessageStatus.PENDING)
                 .build();
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(message));

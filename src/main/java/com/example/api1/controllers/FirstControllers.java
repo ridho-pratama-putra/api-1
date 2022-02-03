@@ -33,7 +33,8 @@ public class FirstControllers {
     @GetMapping(path = "/sec")
     public ResponseEntity second() {
         logger.info("controller /sec called");
-        ResponseEntity result = userMessageService.save();
+//        ResponseEntity result = userMessageService.save();
+        ResponseEntity result = userMessageService.get();
         return result;
     }
 

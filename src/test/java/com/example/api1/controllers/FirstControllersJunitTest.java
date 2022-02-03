@@ -1,5 +1,6 @@
 package com.example.api1.controllers;
 
+import com.example.api1.enumeration.UserMessageStatus;
 import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.UserMessage;
@@ -42,7 +43,7 @@ class FirstControllersJunitTest {
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
         httpStatusBuilder.code("00");
         httpStatusBuilder.description("Success");
-        UserMessage savedMessage = UserMessage.builder().name("dummy").message("hello dummy").status("pending").build();
+        UserMessage savedMessage = UserMessage.builder().name("dummy").message("hello dummy").status(UserMessageStatus.PENDING).build();
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(savedMessage));
         CustomHttpResponse expected = httpResponseBuilder.build();
@@ -62,7 +63,7 @@ class FirstControllersJunitTest {
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
         httpStatusBuilder.code("00");
         httpStatusBuilder.description("Success");
-        UserMessage savedMessage = UserMessage.builder().name("dummy").message("hello dummy").status("pending").build();
+        UserMessage savedMessage = UserMessage.builder().name("dummy").message("hello dummy").status(UserMessageStatus.PENDING).build();
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(savedMessage));
         CustomHttpResponse expected = httpResponseBuilder.build();
@@ -79,7 +80,7 @@ class FirstControllersJunitTest {
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
         httpStatusBuilder.code("00");
         httpStatusBuilder.description("Success");
-        UserMessage savedMessage = UserMessage.builder().name("dummy").message("hello dummy").status("pending").build();
+        UserMessage savedMessage = UserMessage.builder().name("dummy").message("hello dummy").status(UserMessageStatus.PENDING).build();
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(savedMessage));
         CustomHttpResponse expected = httpResponseBuilder.build();

@@ -1,5 +1,6 @@
 package com.example.api1.models;
 
+import com.example.api1.enumeration.UserMessageStatus;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,7 +27,8 @@ public class UserMessage {
     private String message;
 
     @Column(nullable =false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserMessageStatus status;
 
     @CreatedDate
     @Column(name = "created_date", nullable = false, updatable = false)
