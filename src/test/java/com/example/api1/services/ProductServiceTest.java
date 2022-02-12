@@ -18,9 +18,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
@@ -48,8 +50,8 @@ class ProductServiceTest {
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(product));
         CustomHttpResponse expected = httpResponseBuilder.build();
-
         Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(product);
+
         ResponseEntity result = productService.createProduct(product);
 
         CustomHttpResponse body = (CustomHttpResponse) result.getBody();
@@ -74,8 +76,8 @@ class ProductServiceTest {
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.error(Arrays.asList(CustomHttpError.builder().source("api-1").message("DataIntegrityViolationException").build()));
         CustomHttpResponse expected = httpResponseBuilder.build();
-
         Mockito.when(productRepository.save(Mockito.any(Product.class))).thenThrow(DataIntegrityViolationException.class);
+
         ResponseEntity result = productService.createProduct(product);
 
         CustomHttpResponse body = (CustomHttpResponse) result.getBody();
@@ -84,4 +86,15 @@ class ProductServiceTest {
         Assert.assertTrue(expected.getError().equals(body.getError()));
     }
 
+    @Test
+    public void getProductByNameLike_shouldReturnMostLikelyProduct_whenCalledWithSabun() {
+        List<Product> expectedMatchedProduct = Arrays.asList(productRepository.save(Product.builder().barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build()),
+                productRepository.save(Product.builder().barcode("254367891").description("sampo").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build()));
+        Mockito.when(productRepository.findAllByDescriptionContaining(Mockito.any(String.class))).thenReturn(expectedMatchedProduct);
+
+        ResponseEntity result = productService.getProductByNameLike("sa");
+
+        CustomHttpResponse body = (CustomHttpResponse) result.getBody();
+        Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
 }
