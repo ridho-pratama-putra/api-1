@@ -67,7 +67,7 @@ class FirstControllersJunitTest {
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(savedMessage));
         CustomHttpResponse expected = httpResponseBuilder.build();
-        Mockito.when(userMessageService.save())
+        Mockito.when(userMessageService.getByStatus())
                 .thenReturn(new ResponseEntity(expected, HttpStatus.OK));
         ResponseEntity result = firstControllers.second();
 
