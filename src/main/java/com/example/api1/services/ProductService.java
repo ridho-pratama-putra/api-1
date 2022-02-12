@@ -1,5 +1,6 @@
 package com.example.api1.services;
 
+import com.example.api1.Exceptions.ProductNotFoundException;
 import com.example.api1.models.Product;
 import com.example.api1.repositories.ProductRepository;
 import com.example.api1.utils.InternalServerErrorGenerator;
@@ -9,8 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -43,5 +47,29 @@ public class ProductService {
             result = InternalServerErrorGenerator.generate(e);
         }
         return result;
+    }
+
+    public ResponseEntity updateProduct(Product product) {
+        ResponseEntity result;
+
+        Optional<Product> optionalProduct = productRepository.findById(product.getId());
+        Product retrievedProduct = optionalProduct.get();
+        retrievedProduct.setBarcode(product.getBarcode());
+        retrievedProduct.setDescription(product.getDescription());
+        retrievedProduct.setSellPrice(product.getSellPrice());
+        Product contentResult = productRepository.save(retrievedProduct);
+        result = OkGenerator.generate(Arrays.asList(contentResult));
+        return result;
+    }
+
+    public ResponseEntity deleteProduct(Product product) {
+        ResponseEntity result;
+        Optional<Product> byId = productRepository.findById(product.getId());
+        if (byId.isPresent()) {
+            productRepository.delete(product);
+            result = OkGenerator.generate(Collections.EMPTY_LIST);
+            return result;
+        }
+        return InternalServerErrorGenerator.generate(new ProductNotFoundException("product not found"));
     }
 }
