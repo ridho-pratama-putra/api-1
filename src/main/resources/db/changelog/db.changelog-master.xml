@@ -21,4 +21,22 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
         <addAutoIncrement tableName="user_message" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
         <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
     </changeSet>
+    <changeSet id="create table product" author="ridho pratama">
+        <createTable tableName="products">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="product_id_pk" />
+            </column>
+            <column name="description" type="varchar(250)">
+                <constraints nullable="false" />
+            </column>
+            <column name="sell_price" type="varchar(250)">
+                <constraints nullable="false" />
+            </column>
+            <column name="barcode" type="varchar(250)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_date" type="timestamp" />
+            <column name="last_modified_date" type="timestamp" />
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
