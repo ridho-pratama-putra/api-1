@@ -42,8 +42,21 @@ public class UserMessageService {
         return new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
     }
 
-    public ResponseEntity get() {
+    public ResponseEntity getByStatus() {
         logger.info("service get called");
+        List<UserMessage> all = userMessageRepository.findAllByStatus(UserMessageStatus.PENDING);
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(new ArrayList<>(all));
+
+        return new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK);
+    }
+
+    public ResponseEntity getAll() {
+        logger.info("service All called");
         List<UserMessage> all = userMessageRepository.findAll();
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();

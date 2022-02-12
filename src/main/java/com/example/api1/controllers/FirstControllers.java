@@ -34,7 +34,16 @@ public class FirstControllers {
     public ResponseEntity second() {
         logger.info("controller /sec called");
 //        ResponseEntity result = userMessageService.save();
-        ResponseEntity result = userMessageService.get();
+        ResponseEntity result = userMessageService.getByStatus();
+        return result;
+    }
+
+    @RolesAllowed("user_api_1")
+    @GetMapping(path = "/getAll")
+    public ResponseEntity getAll() {
+        logger.info("controller /sec called");
+//        ResponseEntity result = userMessageService.save();
+        ResponseEntity result = userMessageService.getAll();
         return result;
     }
 
