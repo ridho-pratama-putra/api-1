@@ -25,6 +25,8 @@ public class ProductService {
         ResponseEntity result;
 
         try {
+            product.setLastModifiedDate(new Date());
+            product.setCreatedDate(new Date());
             Product savedProduct = productRepository.save(product);
             result = OkGenerator.generate(Arrays.asList(savedProduct));
         } catch (Exception e) {

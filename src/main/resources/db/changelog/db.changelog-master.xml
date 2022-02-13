@@ -22,7 +22,7 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
         <createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
     </changeSet>
     <changeSet id="create table product" author="ridho pratama">
-        <createTable tableName="products">
+        <createTable tableName="product">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="product_id_pk" />
             </column>
@@ -33,9 +33,9 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
                 <constraints nullable="false" />
             </column>
             <column name="barcode" type="varchar(250)">
-                <constraints nullable="false" />
+                <constraints nullable="false" uniqueConstraintName="product_barcode" unique="true"/>
             </column>
-            <column name="stock_asvailable" type="bigint"/>
+            <column name="stock_available" type="bigint"/>
             <column name="created_date" type="timestamp" />
             <column name="last_modified_date" type="timestamp" />
         </createTable>
