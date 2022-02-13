@@ -10,11 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -71,5 +67,21 @@ public class ProductService {
             return result;
         }
         return InternalServerErrorGenerator.generate(new ProductNotFoundException("product not found"));
+    }
+
+    public ResponseEntity incrementStock(Long id, Integer incrementQuantity) {
+        Product product = productRepository.findById(id).get();
+        product.setStockAvailable(product.getStockAvailable() + incrementQuantity);
+        product.setLastModifiedDate(new Date());
+        Product updatedProduct = productRepository.save(product);
+        return OkGenerator.generate(Collections.singletonList(updatedProduct));
+    }
+
+    public ResponseEntity decrementStock(Long id, Integer decrementQuantity) {
+        Product product = productRepository.findById(id).get();
+        product.setStockAvailable(product.getStockAvailable() + decrementQuantity);
+        product.setLastModifiedDate(new Date());
+        Product updatedProduct = productRepository.save(product);
+        return OkGenerator.generate(Collections.singletonList(updatedProduct));
     }
 }

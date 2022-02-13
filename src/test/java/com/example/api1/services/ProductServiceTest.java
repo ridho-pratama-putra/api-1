@@ -116,6 +116,60 @@ class ProductServiceTest {
     }
 
     @Test
+    public void incrementStock_shouldDoUpdateStock_whenCalled() {
+        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+                .stockAvailable(10)
+                .build();
+        Product addSabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+                .stockAvailable(11)
+                .build();
+        Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(sabun));
+        Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(addSabun);
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(Collections.singletonList(addSabun));
+        CustomHttpResponse expected = httpResponseBuilder.build();
+
+        ResponseEntity result = productService.incrementStock(1L, 1);
+
+        CustomHttpResponse body = (CustomHttpResponse) result.getBody();
+        Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
+        Assert.assertTrue(expected.getStatus().equals(body.getStatus()));
+        Assert.assertTrue(expected.getResult().equals(body.getResult()));
+        Mockito.verify(productRepository, Mockito.times(1)).save(Mockito.any());
+    }
+
+    @Test
+    public void decrementStock_shouldDoUpdateStock_whenCalled() {
+        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+                .stockAvailable(10)
+                .build();
+        Product addSabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+                .stockAvailable(9)
+                .build();
+        Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(sabun));
+        Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(addSabun);
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(Collections.singletonList(addSabun));
+        CustomHttpResponse expected = httpResponseBuilder.build();
+
+        ResponseEntity result = productService.decrementStock(1L, 1);
+
+        CustomHttpResponse body = (CustomHttpResponse) result.getBody();
+        Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
+        Assert.assertTrue(expected.getStatus().equals(body.getStatus()));
+        Assert.assertTrue(expected.getResult().equals(body.getResult()));
+        Mockito.verify(productRepository, Mockito.times(1)).save(Mockito.any());
+    }
+
+    @Test
     public void deleteProduct_shouldDoDelete_whenProductExist() {
         Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build();
         Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(sabun));

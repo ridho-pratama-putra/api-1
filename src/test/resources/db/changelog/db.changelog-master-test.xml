@@ -36,6 +36,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
             <column name="barcode" type="varchar(250)">
                 <constraints nullable="false" uniqueConstraintName="product_barcode" unique="true"/>
             </column>
+            <column name="stock_available" type="bigint"/>
             <column name="created_date" type="timestamp" />
             <column name="last_modified_date" type="timestamp" />
         </createTable>

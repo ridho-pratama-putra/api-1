@@ -35,6 +35,7 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
             <column name="barcode" type="varchar(250)">
                 <constraints nullable="false" />
             </column>
+            <column name="stock_asvailable" type="bigint"/>
             <column name="created_date" type="timestamp" />
             <column name="last_modified_date" type="timestamp" />
         </createTable>

@@ -27,6 +27,9 @@ public class Product {
     @Column(nullable =false)
     String barcode;
 
+    @Column(name = "stock_available")
+    Integer stockAvailable;
+
     @CreatedDate
     @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
