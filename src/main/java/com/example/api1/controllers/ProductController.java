@@ -32,8 +32,14 @@ public class ProductController {
         return productService.getProductByNameLike(productName);
     }
 
+    @PutMapping(path = "/products/{productId}/sold")
+    public ResponseEntity decrementProductStock(@PathVariable Long productId) {
+        return productService.decrementStock(productId, 1);
+    }
+
     @DeleteMapping(path = "/products/{productId}")
     public ResponseEntity deleteProduct(@PathVariable Long productId) {
         return productService.deleteProduct(productId);
     }
+
 }
