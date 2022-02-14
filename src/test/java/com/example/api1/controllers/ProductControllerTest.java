@@ -121,6 +121,30 @@ class ProductControllerTest {
     }
 
     @Test
+    public void decrementProductStock_shouldCallProductService() throws Exception {
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        Product savedProduct = Product.builder().id(1L).description("dummy").barcode("hello dummy").sellPrice("10000").stockAvailable(4).build();
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(Arrays.asList(savedProduct));
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectation = objectMapper.writeValueAsString(httpResponseBuilder.build());
+        String content = objectMapper.writeValueAsString(savedProduct);
+        Mockito.when(productService.decrementStock(Mockito.any(), Mockito.any())).thenReturn(new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK));
+
+        this.mockMvc.perform(put("/products/1/sold")
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectation));
+        Mockito.verify(productService, Mockito.times(1)).decrementStock(Mockito.anyLong(), Mockito.any());
+    }
+
+    @Test
     public void deleteProduct_shouldCallProductService() throws Exception {
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
