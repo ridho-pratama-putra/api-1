@@ -177,12 +177,13 @@ class ProductServiceTest {
         httpResponseBuilder.result(Collections.emptyList());
         CustomHttpResponse expected = httpResponseBuilder.build();
 
-        ResponseEntity result = productService.deleteProduct(sabun);
+        ResponseEntity result = productService.deleteProduct(sabun.getId());
 
         CustomHttpResponse body = (CustomHttpResponse) result.getBody();
         Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
         Assert.assertTrue(expected.getStatus().equals(body.getStatus()));
         Assert.assertTrue(expected.getResult().equals(body.getResult()));
+        Mockito.verify(productRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
     }
 
     @Test
@@ -197,7 +198,7 @@ class ProductServiceTest {
         httpResponseBuilder.error(Collections.singletonList(new CustomHttpError("api-1", null, "ProductNotFoundException")));
         CustomHttpResponse expected = httpResponseBuilder.build();
 
-        ResponseEntity result = productService.deleteProduct(sabun);
+        ResponseEntity result = productService.deleteProduct(sabun.getId());
 
         CustomHttpResponse body = (CustomHttpResponse) result.getBody();
         Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());

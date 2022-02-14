@@ -7,12 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.annotation.security.RolesAllowed;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ProductController {
@@ -35,5 +30,10 @@ public class ProductController {
     @GetMapping(path = "/products/search")
     public ResponseEntity get(@RequestParam(name="name", required = true) String productName) {
         return productService.getProductByNameLike(productName);
+    }
+
+    @DeleteMapping(path = "/products/{productId}")
+    public ResponseEntity deleteProduct(@PathVariable Long productId) {
+        return productService.deleteProduct(productId);
     }
 }
