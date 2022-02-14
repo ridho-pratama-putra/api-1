@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,8 +21,13 @@ public class ProductController {
     private Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @PostMapping(path = "/product")
-    @RolesAllowed("user_api_1")
+//    @RolesAllowed("user_api_1")
     public ResponseEntity createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
+    }
+
+    @GetMapping(path = "/product")
+    public ResponseEntity getAllProduct() {
+        return productService.getAllProduct();
     }
 }

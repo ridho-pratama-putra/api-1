@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.Date;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -57,5 +59,22 @@ class ProductControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(expectation));
+    }
+
+    @Test
+    public void getAllProduct_shouldCallProductService() throws Exception {
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        Product savedProduct = Product.builder().id(1L).description("dummy").barcode("hello dummy").sellPrice("10000").lastModifiedDate(new Date()).createdDate(new Date()).stockAvailable(4).build();
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(Arrays.asList(savedProduct));
+
+        Mockito.when(productService.createProduct(Mockito.any())).thenReturn(new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK));
+        this.mockMvc.perform(get("/product"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                ;
     }
 }

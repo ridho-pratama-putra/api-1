@@ -208,4 +208,15 @@ class ProductServiceTest {
         Assert.assertTrue(expected.getStatus().equals(body.getStatus()));
         Assert.assertTrue(expected.getError().equals(body.getError()));
     }
+
+    @Test
+    public void getAllProduct_shouldReturnAllProducts_whenCalled() {
+        List<Product> expectedMatchedProduct = Arrays.asList(Product.builder().barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build(),
+                Product.builder().barcode("254367891").description("sampo").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build());
+        Mockito.when(productRepository.findAll()).thenReturn(expectedMatchedProduct);
+
+        ResponseEntity result = productService.getAllProduct();
+
+        Assert.assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
 }

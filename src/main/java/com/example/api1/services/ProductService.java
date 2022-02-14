@@ -35,6 +35,11 @@ public class ProductService {
         return result;
     }
 
+    public ResponseEntity getAllProduct() {
+        List<Product> all = productRepository.findAll();
+        return OkGenerator.generate(all);
+    }
+
     public ResponseEntity getProductByNameLike(String keyword) {
         ResponseEntity result;
 
