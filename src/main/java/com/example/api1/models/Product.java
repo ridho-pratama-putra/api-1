@@ -3,6 +3,7 @@ package com.example.api1.models;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,6 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@EntityListeners(AuditingEntityListener.class)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +36,7 @@ public class Product {
     @Column(name = "created_date", nullable = false, updatable = false)
     private Date createdDate;
 
+    @Column
     @LastModifiedDate
-    @Column(name = "last_modified_date", nullable = false)
     private Date lastModifiedDate;
 }
