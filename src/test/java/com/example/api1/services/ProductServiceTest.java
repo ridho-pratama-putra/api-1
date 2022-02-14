@@ -107,7 +107,7 @@ class ProductServiceTest {
         httpResponseBuilder.result(Collections.singletonList(latestProduct));
         CustomHttpResponse expected = httpResponseBuilder.build();
 
-        ResponseEntity result = productService.updateProduct(latestProduct);
+        ResponseEntity result = productService.updateProduct(latestProduct.getId(), latestProduct);
 
         CustomHttpResponse body = (CustomHttpResponse) result.getBody();
         Assert.assertEquals(HttpStatus.OK, result.getStatusCode());

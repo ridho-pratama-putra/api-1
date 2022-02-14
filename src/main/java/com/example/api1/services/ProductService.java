@@ -52,10 +52,10 @@ public class ProductService {
         return result;
     }
 
-    public ResponseEntity updateProduct(Product product) {
+    public ResponseEntity updateProduct(Long productId, Product product) {
         ResponseEntity result;
 
-        Optional<Product> optionalProduct = productRepository.findById(product.getId());
+        Optional<Product> optionalProduct = productRepository.findById(productId);
         Product retrievedProduct = optionalProduct.get();
         retrievedProduct.setBarcode(product.getBarcode());
         retrievedProduct.setDescription(product.getDescription());
