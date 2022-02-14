@@ -63,11 +63,11 @@ public class ProductService {
         return result;
     }
 
-    public ResponseEntity deleteProduct(Product product) {
+    public ResponseEntity deleteProduct(Long productId) {
         ResponseEntity result;
-        Optional<Product> byId = productRepository.findById(product.getId());
+        Optional<Product> byId = productRepository.findById(productId);
         if (byId.isPresent()) {
-            productRepository.delete(product);
+            productRepository.deleteById(productId);
             result = OkGenerator.generate(Collections.EMPTY_LIST);
             return result;
         }

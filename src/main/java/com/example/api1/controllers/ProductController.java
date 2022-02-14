@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
-
 @Controller
 public class ProductController {
 
@@ -37,5 +35,10 @@ public class ProductController {
     @PutMapping(path = "/products/{productId}")
     public ResponseEntity updateProduct(@PathVariable Long productId, @RequestBody Product product) {
         return productService.updateProduct(productId, product);
+    }
+
+    @DeleteMapping(path = "/products/{productId}")
+    public ResponseEntity deleteProduct(@PathVariable Long productId) {
+        return productService.deleteProduct(productId);
     }
 }

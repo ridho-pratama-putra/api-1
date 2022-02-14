@@ -119,4 +119,20 @@ class ProductControllerTest {
                 .andExpect(content().json(expectation));
         Mockito.verify(productService, Mockito.times(1)).updateProduct(Mockito.anyLong(), Mockito.any());
     }
+
+    @Test
+    public void deleteProduct_shouldCallProductService() throws Exception {
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        Product savedProduct = Product.builder().id(1L).description("dummy").barcode("hello dummy").sellPrice("10000").stockAvailable(4).build();
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(Arrays.asList(savedProduct));
+        Mockito.when(productService.updateProduct(Mockito.any(), Mockito.any())).thenReturn(new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK));
+
+        this.mockMvc.perform(delete("/products/1"))
+                .andExpect(status().isOk());
+        Mockito.verify(productService, Mockito.times(1)).deleteProduct(Mockito.anyLong());
+    }
 }
