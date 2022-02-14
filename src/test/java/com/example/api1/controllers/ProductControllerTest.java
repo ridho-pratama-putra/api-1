@@ -5,6 +5,7 @@ import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.Product;
 import com.example.api1.services.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ class ProductControllerTest {
         String content = objectMapper.writeValueAsString(savedProduct);
 
         Mockito.when(productService.createProduct(Mockito.any())).thenReturn(new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK));
-        this.mockMvc.perform(post("/product")
+        this.mockMvc.perform(post("/products")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -72,9 +73,26 @@ class ProductControllerTest {
         httpResponseBuilder.result(Arrays.asList(savedProduct));
 
         Mockito.when(productService.createProduct(Mockito.any())).thenReturn(new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK));
-        this.mockMvc.perform(get("/product"))
+        this.mockMvc.perform(get("/products"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 ;
+    }
+
+    @Test
+    public void get_shouldCallProductServiceGetProductNameLike_whenCall() throws Exception {
+        CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
+        CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
+        httpStatusBuilder.code("00");
+        httpStatusBuilder.description("Success");
+        Product savedProduct = Product.builder().id(1L).description("dummy").barcode("hello dummy").sellPrice("10000").lastModifiedDate(new Date()).createdDate(new Date()).stockAvailable(4).build();
+        httpResponseBuilder.status(httpStatusBuilder.build());
+        httpResponseBuilder.result(Arrays.asList(savedProduct));
+
+        Mockito.when(productService.createProduct(Mockito.any())).thenReturn(new ResponseEntity(httpResponseBuilder.build(), HttpStatus.OK));
+        this.mockMvc.perform(get("/products/search?name=du"))
+                .andDo(print())
+                .andExpect(status().isOk())
+        ;
     }
 }

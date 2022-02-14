@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -20,14 +21,19 @@ public class ProductController {
     ProductService productService;
     private Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    @PostMapping(path = "/product")
+    @PostMapping(path = "/products")
 //    @RolesAllowed("user_api_1")
     public ResponseEntity createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
     }
 
-    @GetMapping(path = "/product")
+    @GetMapping(path = "/products")
     public ResponseEntity getAllProduct() {
         return productService.getAllProduct();
+    }
+
+    @GetMapping(path = "/products/search")
+    public ResponseEntity get(@RequestParam(name="name", required = true) String productName) {
+        return productService.getProductByNameLike(productName);
     }
 }
