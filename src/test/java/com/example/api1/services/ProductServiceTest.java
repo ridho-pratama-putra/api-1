@@ -36,8 +36,6 @@ class ProductServiceTest {
                 .description("Sabun Lifebuoy kuning 80gr")
                 .sellPrice("3000")
                 .barcode("07615207546125476")
-                .createdDate(new Date())
-                .lastModifiedDate(new Date())
                 .build();
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
@@ -62,8 +60,6 @@ class ProductServiceTest {
         Product product = Product.builder()
                 .description("Sabun Lifebuoy kuning 80gr")
                 .barcode("07615207546125476")
-                .createdDate(new Date())
-                .lastModifiedDate(new Date())
                 .build();
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
@@ -84,8 +80,8 @@ class ProductServiceTest {
 
     @Test
     public void getProductByNameLike_shouldReturnMostLikelyProduct_whenCalledWithSa() {
-        List<Product> expectedMatchedProduct = Arrays.asList(Product.builder().barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build(),
-                Product.builder().barcode("254367891").description("sampo").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build());
+        List<Product> expectedMatchedProduct = Arrays.asList(Product.builder().barcode("254367890").description("sabun").sellPrice("10000").build(),
+                Product.builder().barcode("254367891").description("sampo").sellPrice("10000").build());
         Mockito.when(productRepository.findAllByDescriptionContaining(Mockito.any(String.class))).thenReturn(expectedMatchedProduct);
 
         ResponseEntity result = productService.getProductByNameLike("sa");
@@ -95,8 +91,8 @@ class ProductServiceTest {
 
     @Test
     public void updateProduct_shouldDoUpdate_whenCalledWithPriceChanges() {
-        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build();
-        Product latestProduct = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("15000").createdDate(new Date()).lastModifiedDate(new Date()).build();
+        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").build();
+        Product latestProduct = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("15000").build();
         Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(sabun));
         Mockito.when(productRepository.save(Mockito.any(Product.class))).thenReturn(latestProduct);
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
@@ -117,10 +113,10 @@ class ProductServiceTest {
 
     @Test
     public void incrementStock_shouldDoUpdateStock_whenCalled() {
-        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000")
                 .stockAvailable(10)
                 .build();
-        Product addSabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+        Product addSabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000")
                 .stockAvailable(11)
                 .build();
         Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(sabun));
@@ -144,10 +140,10 @@ class ProductServiceTest {
 
     @Test
     public void decrementStock_shouldDoUpdateStock_whenCalled() {
-        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000")
                 .stockAvailable(10)
                 .build();
-        Product addSabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date())
+        Product addSabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000")
                 .stockAvailable(9)
                 .build();
         Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(sabun));
@@ -171,7 +167,7 @@ class ProductServiceTest {
 
     @Test
     public void deleteProduct_shouldDoDelete_whenProductExist() {
-        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build();
+        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").build();
         Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.of(sabun));
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
@@ -191,7 +187,7 @@ class ProductServiceTest {
 
     @Test
     public void deleteProduct_shouldThrowException_whenProductNotFound() {
-        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build();
+        Product sabun = Product.builder().id(1L).barcode("254367890").description("sabun").sellPrice("10000").build();
         Mockito.when(productRepository.findById(Mockito.any(Long.class))).thenReturn(Optional.<Product>empty());
         CustomHttpResponse.CustomHttpResponseBuilder httpResponseBuilder = CustomHttpResponse.builder();
         CustomHttpStatus.CustomHttpStatusBuilder httpStatusBuilder = CustomHttpStatus.builder();
@@ -211,8 +207,8 @@ class ProductServiceTest {
 
     @Test
     public void getAllProduct_shouldReturnAllProducts_whenCalled() {
-        List<Product> expectedMatchedProduct = Arrays.asList(Product.builder().barcode("254367890").description("sabun").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build(),
-                Product.builder().barcode("254367891").description("sampo").sellPrice("10000").createdDate(new Date()).lastModifiedDate(new Date()).build());
+        List<Product> expectedMatchedProduct = Arrays.asList(Product.builder().barcode("254367890").description("sabun").sellPrice("10000").build(),
+                Product.builder().barcode("254367891").description("sampo").sellPrice("10000").build());
         Mockito.when(productRepository.findAll()).thenReturn(expectedMatchedProduct);
 
         ResponseEntity result = productService.getAllProduct();
