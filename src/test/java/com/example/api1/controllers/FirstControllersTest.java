@@ -6,6 +6,7 @@ import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.UserMessage;
 import com.example.api1.services.UserMessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Ignore
 class FirstControllersTest {
 
     @MockBean

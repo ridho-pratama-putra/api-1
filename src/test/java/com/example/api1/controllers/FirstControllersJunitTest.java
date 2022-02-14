@@ -5,9 +5,9 @@ import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.UserMessage;
 import com.example.api1.services.UserMessageService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,6 +24,7 @@ import java.util.Collections;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
+@Ignore
 class FirstControllersJunitTest {
 
     @Mock
