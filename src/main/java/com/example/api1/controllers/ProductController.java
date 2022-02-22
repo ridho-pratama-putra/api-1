@@ -32,6 +32,11 @@ public class ProductController {
         return productService.getProductByNameLike(productName);
     }
 
+    @GetMapping(path = "/products/details")
+    public ResponseEntity getProductByBarcode(@RequestParam(name="barcode", required = true) String barcode) {
+        return productService.getProductByBarcode(barcode);
+    }
+
     @PutMapping(path = "/products/{productId}")
     public ResponseEntity updateProduct(@PathVariable Long productId, @RequestBody Product product) {
         return productService.updateProduct(productId, product);
