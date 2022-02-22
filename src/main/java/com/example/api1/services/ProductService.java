@@ -50,6 +50,18 @@ public class ProductService {
         return result;
     }
 
+    public ResponseEntity getProductByBarcode(String keyword) {
+        ResponseEntity result;
+
+        try {
+            List<Product> allByDescriptionContaining = productRepository.findAllByBarcodeEquals(keyword);
+            result = OkGenerator.generate(allByDescriptionContaining);
+        } catch (Exception e) {
+            result = InternalServerErrorGenerator.generate(e);
+        }
+        return result;
+    }
+
     public ResponseEntity updateProduct(Product product) {
         ResponseEntity result;
 

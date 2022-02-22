@@ -32,6 +32,11 @@ public class ProductController {
         return productService.getProductByNameLike(productName);
     }
 
+    @GetMapping(path = "/products/details")
+    public ResponseEntity getProductByBarcode(@RequestParam(name="barcode", required = true) String barcode) {
+        return productService.getProductByBarcode(barcode);
+    }
+
     @PutMapping(path = "/products/{productId}/sold")
     public ResponseEntity decrementProductStock(@PathVariable Long productId) {
         return productService.decrementStock(productId, 1);
