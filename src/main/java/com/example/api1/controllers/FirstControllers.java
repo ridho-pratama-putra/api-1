@@ -5,6 +5,12 @@ import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.UserMessage;
 import com.example.api1.services.UserMessageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +22,27 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 @Controller
 public class FirstControllers {
     @Autowired
     UserMessageService userMessageService;
+
+    @Autowired
+    private HttpServletRequest request;
+
     private Logger logger = LoggerFactory.getLogger(FirstControllers.class);
+
+    ObjectMapper objectMapper = new ObjectMapper();
     @GetMapping(path = "/first")
     public ResponseEntity first() {
         ResponseEntity result = userMessageService.save();
         return result;
     }
 
-    @RolesAllowed("user_api_1")
+    @RolesAllowed({"user_api_1", "user-api-1-realm-role"})
     @GetMapping(path = "/sec")
     public ResponseEntity second() {
         logger.info("controller /sec called");
@@ -38,11 +51,19 @@ public class FirstControllers {
         return result;
     }
 
-    @RolesAllowed("user_api_1")
+    @RolesAllowed({"user_api_1", "user-api-1-realm-role"})
     @GetMapping(path = "/getAll")
-    public ResponseEntity getAll() {
+    public ResponseEntity getAll() throws JsonProcessingException {
         logger.info("controller /sec called");
-//        ResponseEntity result = userMessageService.save();
+
+        KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
+        KeycloakPrincipal principal=(KeycloakPrincipal)token.getPrincipal();
+        KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
+        AccessToken accessToken = session.getToken();
+
+        AccessToken.Access realmAccess = accessToken.getRealmAccess();
+        logger.info("USER REALM ROLE GET ALL CONTENT :: " + objectMapper.writeValueAsString(realmAccess));
+        logger.info("USER ROLE GET ALL CONTENT :: " + objectMapper.writeValueAsString(realmAccess.getRoles()));
         ResponseEntity result = userMessageService.getAll();
         return result;
     }
