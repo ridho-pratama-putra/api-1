@@ -27,7 +27,7 @@ public class UserMessage {
     private String message;
 
     @Column(nullable =false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private UserMessageStatus status;
 
     @CreatedDate
@@ -51,5 +51,9 @@ public class UserMessage {
     @Override
     public int hashCode() {
         return Objects.hash(name, message, status);
+    }
+
+    public String getStatus() {
+        return status.getDisplayName();
     }
 }

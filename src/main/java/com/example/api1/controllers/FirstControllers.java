@@ -4,16 +4,12 @@ import com.example.api1.models.CustomHttpError;
 import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.UserMessage;
+import com.example.api1.repositories.UserMessageRepository;
 import com.example.api1.services.UserMessageService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.keycloak.KeycloakPrincipal;
-import org.keycloak.KeycloakSecurityContext;
-import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
-import org.keycloak.representations.AccessToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,8 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class FirstControllers {
@@ -49,7 +45,7 @@ public class FirstControllers {
 
     @RolesAllowed({"user_api_1"})
     @GetMapping(path = "/getAll")
-    public ResponseEntity getAll() throws JsonProcessingException {
+    public ResponseEntity getUserMessages() {
         logger.info("controller /sec called");
         ResponseEntity result = userMessageService.getAll();
         return result;
@@ -81,5 +77,19 @@ public class FirstControllers {
     public ResponseEntity createMessage(@RequestBody UserMessage userMessage) {
         ResponseEntity responseEntity = userMessageService.create(userMessage);
         return responseEntity;
+    }
+
+    @Autowired
+    UserMessageRepository userMessageRepository;
+
+    @QueryMapping(name = "userMessages") // referenced to graphql query schema
+    public List<UserMessage> gettingUserMessages() {
+        return userMessageRepository.findAll();
+    }
+
+    @GetMapping(path = "/deleteAll")
+    public ResponseEntity deleteAll() {
+        userMessageRepository.deleteAllInBatch();
+        return new ResponseEntity(new CustomHttpResponse(), HttpStatus.OK);
     }
 }
