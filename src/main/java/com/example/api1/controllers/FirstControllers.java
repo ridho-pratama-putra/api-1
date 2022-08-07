@@ -30,19 +30,15 @@ public class FirstControllers {
     @Autowired
     UserMessageService userMessageService;
 
-    @Autowired
-    private HttpServletRequest request;
-
     private Logger logger = LoggerFactory.getLogger(FirstControllers.class);
 
-    ObjectMapper objectMapper = new ObjectMapper();
     @GetMapping(path = "/first")
     public ResponseEntity first() {
         ResponseEntity result = userMessageService.save();
         return result;
     }
 
-    @RolesAllowed({"user_api_1", "user-api-1-realm-role"})
+    @RolesAllowed({"user_api_1"})
     @GetMapping(path = "/sec")
     public ResponseEntity second() {
         logger.info("controller /sec called");
@@ -51,7 +47,7 @@ public class FirstControllers {
         return result;
     }
 
-    @RolesAllowed({"user_api_1", "user-api-1-realm-role"})
+    @RolesAllowed({"user_api_1"})
     @GetMapping(path = "/getAll")
     public ResponseEntity getAll() throws JsonProcessingException {
         logger.info("controller /sec called");
