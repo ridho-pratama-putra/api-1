@@ -55,15 +55,6 @@ public class FirstControllers {
     @GetMapping(path = "/getAll")
     public ResponseEntity getAll() throws JsonProcessingException {
         logger.info("controller /sec called");
-
-        KeycloakAuthenticationToken token = (KeycloakAuthenticationToken) request.getUserPrincipal();
-        KeycloakPrincipal principal=(KeycloakPrincipal)token.getPrincipal();
-        KeycloakSecurityContext session = principal.getKeycloakSecurityContext();
-        AccessToken accessToken = session.getToken();
-
-        AccessToken.Access realmAccess = accessToken.getRealmAccess();
-        logger.info("USER REALM ROLE GET ALL CONTENT :: " + objectMapper.writeValueAsString(realmAccess));
-        logger.info("USER ROLE GET ALL CONTENT :: " + objectMapper.writeValueAsString(realmAccess.getRoles()));
         ResponseEntity result = userMessageService.getAll();
         return result;
     }
