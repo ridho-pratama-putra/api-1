@@ -10,3 +10,13 @@ type UserMessage {
     createdDate: String!,
     lastModifiedDate: String
 }
+
+input UserMessageInput {
+    name: String,
+    message: String,
+}
+
+type Mutation {
+    writeMessage(userMessageInput: UserMessageInput) : UserMessage
+    writeMessageDirect(name: String!, message: String!) : UserMessage
+}

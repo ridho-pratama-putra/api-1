@@ -1,14 +1,15 @@
 package com.example.api1.controllers;
 
-import com.example.api1.models.CustomHttpError;
-import com.example.api1.models.CustomHttpResponse;
-import com.example.api1.models.CustomHttpStatus;
-import com.example.api1.models.UserMessage;
+import com.example.api1.enumeration.UserMessageStatus;
+import com.example.api1.models.*;
 import com.example.api1.repositories.UserMessageRepository;
 import com.example.api1.services.UserMessageService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -85,6 +87,20 @@ public class FirstControllers {
     @QueryMapping(name = "userMessages") // referenced to graphql query schema
     public List<UserMessage> gettingUserMessages() {
         return userMessageRepository.findAll();
+    }
+
+    @MutationMapping
+    public UserMessage writeMessage(@Argument UserMessageInput userMessageInput) throws JsonProcessingException {
+        logger.info(String.format("userMessageInput [{}]", userMessageInput));
+        UserMessage build = UserMessage.builder()
+                .message(userMessageInput.getMessage())
+                .name(userMessageInput.getName())
+                .createdDate(new Date())
+                .lastModifiedDate(new Date())
+                .status(UserMessageStatus.PENDING)
+                .build();
+        UserMessage save = userMessageRepository.save(build);
+        return save   ;
     }
 
     @GetMapping(path = "/deleteAll")
