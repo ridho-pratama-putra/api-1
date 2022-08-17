@@ -97,4 +97,8 @@ public class UserMessageService {
 
         return result;
     }
+
+    public void deleteAllInBatch() {
+        userMessageRepository.deleteAllInBatch();
+    }
 }
