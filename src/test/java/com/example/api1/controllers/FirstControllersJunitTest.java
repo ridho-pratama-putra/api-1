@@ -5,7 +5,6 @@ import com.example.api1.models.CustomHttpResponse;
 import com.example.api1.models.CustomHttpStatus;
 import com.example.api1.models.UserMessage;
 import com.example.api1.services.UserMessageService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
@@ -67,7 +66,7 @@ class FirstControllersJunitTest {
         httpResponseBuilder.status(httpStatusBuilder.build());
         httpResponseBuilder.result(Collections.singletonList(savedMessage));
         CustomHttpResponse expected = httpResponseBuilder.build();
-        Mockito.when(userMessageService.save())
+        Mockito.when(userMessageService.getByStatus())
                 .thenReturn(new ResponseEntity(expected, HttpStatus.OK));
         ResponseEntity result = firstControllers.second();
 
